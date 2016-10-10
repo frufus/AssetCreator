@@ -16,7 +16,7 @@ module.exports = function(grunt) {
         concat: {
             javascript: {
                 files: {
-                    'js/main.js': ['js/*.js']
+                    'js/main.js': ['js/libs/*.js','js/modules/*.js','js/*.js', '!js/main.js', '!js/main.min.js'],
                 }
             },
             css: {
@@ -26,7 +26,7 @@ module.exports = function(grunt) {
             },
             scss: {
                 files: {
-                    'scss/styles.css': ['css/*.css','scss/**/*.scss']
+                    'scss/styles.css': ['css/*.css', 'scss/**/*.scss']
                 }
             }
         },
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
         },
         watch: {
             javascript: {
-                files: ['js/*.js', '!js/main.js', '!js/main.min.js'],
+                files: ['js/*.js', 'js/**/*.js', '!js/main.js', '!js/main.min.js'],
                 tasks: ['concat:javascript', 'uglify:javascript']
             },
             css: {

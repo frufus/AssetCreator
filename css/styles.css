@@ -54,6 +54,7 @@ table {
 }
 
 .canvas-wrapper, .input-wrapper {
+  float: left;
   height: 100vh;
   width: 50vw;
 }
