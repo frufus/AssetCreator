@@ -9,27 +9,29 @@ ASSETGENERATOR.CANVAS = ASSETGENERATOR.CANVAS || {};
 ASSETGENERATOR.CANVAS.base = (function() {
 
     var canvas;
-
-    function init(settingsopts) {
+	function init(settingsopts) {
 
         var settings = jQuery.extend({
-            height: 200,
-            width: 200
-        }, opts);
+            height: 640,
+            width: 640
+            
+        });
 
-        canvas = $('#js-canvas');
-        if(canvas.getContext) {
-            canvas.getContext("2d");
-        }
+        canvas = document.getElementById('js-canvas');
+        
+       
         if(settings.height){
             setHeight(settings.height);
         }
         if(settings.width){
             setWidth(settings.width);
         }
-
+		
     }
-
+    var getCanvas = function getCanvas(){
+    	return canvas;
+    };
+    
     function setWidth(width) {
         canvas.width = width;
     }
@@ -38,16 +40,16 @@ ASSETGENERATOR.CANVAS.base = (function() {
         canvas.height = height;
     }
 
-
     return {
         init: init,
         setHeight: setHeight,
-        setWidth: setWidth
-    }
+        setWidth: setWidth,
+        getCanvas: getCanvas
+    };
 
 }());
 
-var NAMESPACE = NAMESPACE || {};
+/*var NAMESPACE = NAMESPACE || {};
 
 NAMESPACE.module = (function() {
 
@@ -60,9 +62,65 @@ NAMESPACE.module = (function() {
         init: init
     }
 
-}());
+}());*/
+var ASSETGENERATOR = ASSETGENERATOR || {};
+ASSETGENERATOR.ASSET = ASSETGENERATOR.ASSET || {};
 
+ASSETGENERATOR.ASSET.display = (function() {
+	var canvas;
+	var context;
+	var mod;
+	
+	function init() {
+    	canvas = ASSETGENERATOR.CANVAS.base.getCanvas();
+    	mod = canvas.width / 16;
+    	context = canvas.getContext("2d");
+    	context.strokeStyle = '#DADADA';
+    	context.strokeWidth = 1;
+	}
+	
+	function drawGrid(){
+		for(var i= 0; i <= canvas.width; i++){
+			if(i % mod ==0){
+				drawVerticalLine(context,i);
+				drawHorizontalLine(context,i);
+			}
+		}
+	}
+	function drawVerticalLine(ctx,x){
+		ctx.moveTo(x,0);
+		ctx.lineTo(x,canvas.height);
+		ctx.stroke();
+	}
+	function drawHorizontalLine(ctx,y){
+		ctx.moveTo(0,y);
+		ctx.lineTo(canvas.width, y);
+		ctx.stroke();
+	}
+	function drawFace(skinColor, eyeColor){
+		context.fillStyle = skinColor;
+		context.fillRect(5*mod,5*mod,8*mod,6*mod);
+		context.fillRect(6*mod,11*mod,6*mod,2*mod);
+		context.fillRect(7*mod,13*mod,4*mod,1*mod);
+		context.fillStyle = '#FFFFFF';
+		context.fillRect(5*mod,7*mod,1*mod,1*mod);
+		context.fillRect(10*mod,7*mod,1*mod,1*mod);
+		context.fillStyle = eyeColor;
+		context.fillRect(6*mod,7*mod,2*mod,1*mod);
+		context.fillRect(11*mod,7*mod,2*mod,1*mod);
+		
+	}
+    return {
+        init: init,
+        drawGrid: drawGrid,
+        drawFace: drawFace
+    };
+
+}());
 $(document).ready(function() {
     ASSETGENERATOR.CANVAS.base.init();
+    ASSETGENERATOR.ASSET.display.init();
     console.log('Success!');
+	ASSETGENERATOR.ASSET.display.drawGrid();  
+	ASSETGENERATOR.ASSET.display.drawFace('#cba675', '#312783');   
 });

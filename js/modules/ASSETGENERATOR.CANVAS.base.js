@@ -4,27 +4,29 @@ ASSETGENERATOR.CANVAS = ASSETGENERATOR.CANVAS || {};
 ASSETGENERATOR.CANVAS.base = (function() {
 
     var canvas;
-
-    function init(settingsopts) {
+	function init(settingsopts) {
 
         var settings = jQuery.extend({
-            height: 200,
-            width: 200
-        }, opts);
+            height: 640,
+            width: 640
+            
+        });
 
-        canvas = $('#js-canvas');
-        if(canvas.getContext) {
-            canvas.getContext("2d");
-        }
+        canvas = document.getElementById('js-canvas');
+        
+       
         if(settings.height){
             setHeight(settings.height);
         }
         if(settings.width){
             setWidth(settings.width);
         }
-
+		
     }
-
+    var getCanvas = function getCanvas(){
+    	return canvas;
+    };
+    
     function setWidth(width) {
         canvas.width = width;
     }
@@ -33,11 +35,11 @@ ASSETGENERATOR.CANVAS.base = (function() {
         canvas.height = height;
     }
 
-
     return {
         init: init,
         setHeight: setHeight,
-        setWidth: setWidth
-    }
+        setWidth: setWidth,
+        getCanvas: getCanvas
+    };
 
 }());
