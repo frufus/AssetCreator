@@ -63,21 +63,6 @@ ASSETGENERATOR.ASSET.display = (function() {
 }());
 
 var ASSETGENERATOR = ASSETGENERATOR || {};
-ASSETGENERATOR.ASSETS = ASSETGENERATOR.ASSETS || {};
-
-ASSETGENERATOR.ASSETS.util = (function() {
-
-    function init(opts) {
-
-    }
-
-    return {
-        init: init
-    }
-
-}());
-
-var ASSETGENERATOR = ASSETGENERATOR || {};
 ASSETGENERATOR.CANVAS = ASSETGENERATOR.CANVAS || {};
 
 ASSETGENERATOR.CANVAS.base = (function() {
@@ -125,11 +110,39 @@ ASSETGENERATOR.CANVAS.base = (function() {
 }());
 
 var ASSETGENERATOR = ASSETGENERATOR || {};
-ASSETGENERATOR.INTERFACE = ASSETGENERATOR.INTERFACE || {};
+ASSETGENERATOR.CONTROLLS = ASSETGENERATOR.CONTROLLS || {};
 
-ASSETGENERATOR.INTERFACE.util = (function() {
+ASSETGENERATOR.CONTROLLS.handlers = (function() {
+    var hooks = {
+        updateActiveRecipe: 'js-updateActiveRecipe'
+    };
+
+    function init(opts) {
+        for(var hook in hooks) {
+            eval(hook)();
+        }
+    }
+
+    function updateActiveRecipe() {
+        $('.' + hooks.updateActiveRecipe).on('change', function (e) {
+            ASSETGENERATOR.FILESYSTEM.base.setActiveRecipe($(this).val())
+            console.log('Changed', $(this).val());
+        });
+    }
+
+    return {
+        init: init,
+        hooks: hooks,
+    }
+
+}());
+
+var ASSETGENERATOR = ASSETGENERATOR || {};
+ASSETGENERATOR.CONTROLLS = ASSETGENERATOR.CONTROLLS || {};
+
+ASSETGENERATOR.CONTROLLS.util = (function() {
     var elements = {
-        inputs: '.js-inputs',
+        inputs: '.js-inputs'
     };
 
     function init(opts) {
@@ -137,12 +150,15 @@ ASSETGENERATOR.INTERFACE.util = (function() {
     }
 
 
-    function createDropdown(elements) {
+    function createDropdown(elements, classes) {
         console.log('Ele', elements);
         var $select = $('<select></select>');
         for (ele in elements) {
             var $option = $('<option value="' + elements[ele] +'">' + ele + '</option>');
             $select.append($option);
+        }
+        if(classes) {
+            $select.addClass(classes);
         }
         return $select;
     }
@@ -226,10 +242,10 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
 
     /**
      * 
-     * @param recipe
+     * @param recipeName
      */
-    function setActiveRecipe(recipe) {
-        activeRecipe = recipe;
+    function setActiveRecipe(recipeName) {
+        activeRecipe = getJSON(recipeName);
     }
 
     /**
@@ -245,6 +261,7 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
     return {
         init: init,
         activeRecipe: activeRecipe,
+        setActiveRecipe: setActiveRecipe,
         getRecipes: getRecipes
     }
 
@@ -267,7 +284,7 @@ NAMESPACE.module = (function() {
 
 ag = ASSETGENERATOR || {};
 canvas = ag.CANVAS || {};
-interface = ag.INTERFACE || {};
+controlls = ag.CONTROLLS || {};
 asset = ag.ASSET || {};
 filesystem = ag.FILESYSTEM || {};
 
@@ -275,13 +292,12 @@ $(document).ready(function() {
     canvas.base.init()
     filesystem.base.init();
 
-    var $dropdown = interface.util.createDropdown(filesystem.base.getRecipes());
-    $(interface.util.inputs).append($dropdown);
-    console.log('Dropdown', $dropdown);
+    var $dropdown = controlls.util.createDropdown(filesystem.base.getRecipes(), controlls.handlers.hooks.updateActiveRecipe);
+    $(controlls.util.elements.inputs).append($dropdown);
 
+    controlls.handlers.init();
 
     asset.display.init();
 	asset.display.drawGrid();
 	asset.display.drawFace('#cba675', '#312783');
-    console.log('Success!');
 });

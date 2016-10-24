@@ -68,10 +68,10 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
 
     /**
      * 
-     * @param recipe
+     * @param recipeName
      */
-    function setActiveRecipe(recipe) {
-        activeRecipe = recipe;
+    function setActiveRecipe(recipeName) {
+        activeRecipe = getJSON(recipeName);
     }
 
     /**
@@ -87,6 +87,7 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
     return {
         init: init,
         activeRecipe: activeRecipe,
+        setActiveRecipe: setActiveRecipe,
         getRecipes: getRecipes
     }
 

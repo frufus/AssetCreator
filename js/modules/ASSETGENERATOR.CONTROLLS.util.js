@@ -1,9 +1,9 @@
 var ASSETGENERATOR = ASSETGENERATOR || {};
-ASSETGENERATOR.INTERFACE = ASSETGENERATOR.INTERFACE || {};
+ASSETGENERATOR.CONTROLLS = ASSETGENERATOR.CONTROLLS || {};
 
-ASSETGENERATOR.INTERFACE.util = (function() {
+ASSETGENERATOR.CONTROLLS.util = (function() {
     var elements = {
-        inputs: '.js-inputs',
+        inputs: '.js-inputs'
     };
 
     function init(opts) {
@@ -11,12 +11,15 @@ ASSETGENERATOR.INTERFACE.util = (function() {
     }
 
 
-    function createDropdown(elements) {
+    function createDropdown(elements, classes) {
         console.log('Ele', elements);
         var $select = $('<select></select>');
         for (ele in elements) {
             var $option = $('<option value="' + elements[ele] +'">' + ele + '</option>');
             $select.append($option);
+        }
+        if(classes) {
+            $select.addClass(classes);
         }
         return $select;
     }
