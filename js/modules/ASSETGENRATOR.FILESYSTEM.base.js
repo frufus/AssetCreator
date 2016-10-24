@@ -6,6 +6,7 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
     var dir = './recipe/';
     var extention = '.json';
     var fileList = [];
+    var activeRecipe;
 
     
     function init(opts) {
@@ -30,17 +31,21 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
             },
             success: function (data) {
                 // List all json file names in the page
+                console.log('DATA', data);
                 updatedFileList(data);
-
             }
         });
     }
 
+    /**
+     * 
+     * @param data
+     */
     function updatedFileList(data) {
-        console.log('Data:', data);
-        fileList = data;
-        for (index in fileList) {
-            getJSON(fileList[index]);
+        fileList = [];
+        for (index in data) {
+            var json = getJSON(data[index]);
+            fileList[json.name] = data[index];
         }
     }
 
@@ -49,19 +54,40 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
      * @param filename
      */
     function getJSON(filename) {
-        $.getJSON(dir + filename, {}).done(function(data) {
-            console.log('JSON:', data);
-            return data;
-        });
+        var filePath = dir + filename;
+        var json = $.ajax({
+            url: filePath,
+            method: 'GET',
+            dataType: 'json',
+            async: false,
+            cache: false
+        }).responseText;
+        return JSON.parse(json);
 
+    }
+
+    /**
+     * 
+     * @param recipe
+     */
+    function setActiveRecipe(recipe) {
+        activeRecipe = recipe;
+    }
+
+    /**
+     * 
+     * @returns {Array}
+     */
+    function getRecipes() {
+        return fileList;
     }
 
 
 
-
     return {
-        init: init
-
+        init: init,
+        activeRecipe: activeRecipe,
+        getRecipes: getRecipes
     }
 
 }());

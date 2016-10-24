@@ -59,4 +59,8 @@ table {
   width: 50vw;
 }
 
+.canvas-wrapper canvas {
+  max-width: 100%;
+}
+
 /*# sourceMappingURL=styles.css.map */

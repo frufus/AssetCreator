@@ -45,6 +45,10 @@ ASSETGENERATOR.ASSET.display = (function() {
 		context.fillRect(11*mod,7*mod,2*mod,1*mod);
 		
 	}
+
+	function drawBlock(){
+
+	}
     return {
         init: init,
         drawGrid: drawGrid,

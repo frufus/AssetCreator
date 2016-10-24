@@ -3,6 +3,12 @@
   height: 100vh;
   width: 50vw;
 }
+
+.canvas-wrapper {
+  canvas{
+    max-width: 100%;
+  }
+}
 .input-wrapper {
 
 }
