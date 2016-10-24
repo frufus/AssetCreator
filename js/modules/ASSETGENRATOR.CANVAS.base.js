@@ -5,7 +5,7 @@ ASSETGENERATOR.CANVAS.base = (function() {
 
     var canvas;
 
-    function init(settingsopts) {
+    function init(opts) {
 
         var settings = jQuery.extend({
             height: 200,
@@ -37,7 +37,8 @@ ASSETGENERATOR.CANVAS.base = (function() {
     return {
         init: init,
         setHeight: setHeight,
-        setWidth: setWidth
+        setWidth: setWidth,
+        canvas: canvas
     }
 
 }());

@@ -1,0 +1,17 @@
+{
+    name: 'Human Head Male',
+    height: 16,
+    width: 16,
+
+
+    layer1: {
+
+    },
+    layer2: {
+        name: 'Hair',
+        type: function,
+        function: (function() {
+            ASSETGENERATOR.ASSETS.maketryangele
+        })
+     },
+}
