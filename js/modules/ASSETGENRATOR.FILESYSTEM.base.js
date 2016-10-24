@@ -62,6 +62,7 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
             async: false,
             cache: false
         }).responseText;
+        console.log('JSON:', JSON.parse(json));
         return JSON.parse(json);
 
     }
@@ -82,13 +83,18 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
         return fileList;
     }
 
+    function getActiveRecipe() {
+        return activeRecipe;
+    }
+
 
 
     return {
         init: init,
-        activeRecipe: activeRecipe,
+        getActiveRecipe: getActiveRecipe,
         setActiveRecipe: setActiveRecipe,
-        getRecipes: getRecipes
+        getRecipes: getRecipes,
+        getJSON: getJSON
     }
 
 }());

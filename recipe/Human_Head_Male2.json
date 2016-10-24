@@ -1,5 +1,9 @@
 {
   "name": "Human Head Male 2",
   "height": 16,
-  "width": 16
+  "width": 16,
+  "layer1": {
+    "type": "function",
+    "function": "function(){ console.log('läuft')}"
+  }
 }
