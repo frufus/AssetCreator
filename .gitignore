@@ -38,3 +38,6 @@ jspm_packages
 /node_modules/
 /dest
 /.sass-cache/
+
+#IDE created files
+.project
