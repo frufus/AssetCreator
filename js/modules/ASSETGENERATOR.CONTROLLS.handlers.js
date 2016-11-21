@@ -3,7 +3,8 @@ ASSETGENERATOR.CONTROLLS = ASSETGENERATOR.CONTROLLS || {};
 
 ASSETGENERATOR.CONTROLLS.handlers = (function() {
     var hooks = {
-        updateActiveRecipe: 'js-updateActiveRecipe'
+        updateActiveRecipe: 'js-updateActiveRecipe',
+
     };
 
     function init(opts) {
@@ -14,9 +15,11 @@ ASSETGENERATOR.CONTROLLS.handlers = (function() {
 
     function updateActiveRecipe() {
         $('.' + hooks.updateActiveRecipe).on('change', function (e) {
-            ASSETGENERATOR.FILESYSTEM.base.setActiveRecipe($(this).val())
+            ASSETGENERATOR.FILESYSTEM.base.setActiveRecipeFromList($(this).val());
+            $(ASSETGENERATOR.CONTROLLS.util.elements.recipeInput).val(JSON.stringify(ASSETGENERATOR.FILESYSTEM.base.getActiveRecipe(), undefined, 4));
         });
     }
+
 
     return {
         init: init,

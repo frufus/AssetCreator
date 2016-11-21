@@ -1,0 +1,25 @@
+.recipe-wrapper {
+  display: none; // just for the start
+  position: absolute;
+  margin-left: 5vw;
+  margin-top: 5vh;
+  width: 90vw;
+  height: 90vh;
+  background-color: white;
+  border: 1px solid black;
+
+  textarea {
+    display: block;
+    margin: 2% auto 0;
+    width: 95%;
+    height: 90%;
+  }
+
+  input {
+    display: inline-block;
+    margin-left: 2%;
+  }
+  .disclaimer {
+    display: inline-block;
+  }
+}

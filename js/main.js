@@ -158,7 +158,8 @@ ASSETGENERATOR.CONTROLLS = ASSETGENERATOR.CONTROLLS || {};
 
 ASSETGENERATOR.CONTROLLS.handlers = (function() {
     var hooks = {
-        updateActiveRecipe: 'js-updateActiveRecipe'
+        updateActiveRecipe: 'js-updateActiveRecipe',
+
     };
 
     function init(opts) {
@@ -169,9 +170,11 @@ ASSETGENERATOR.CONTROLLS.handlers = (function() {
 
     function updateActiveRecipe() {
         $('.' + hooks.updateActiveRecipe).on('change', function (e) {
-            ASSETGENERATOR.FILESYSTEM.base.setActiveRecipe($(this).val())
+            ASSETGENERATOR.FILESYSTEM.base.setActiveRecipeFromList($(this).val());
+            $(ASSETGENERATOR.CONTROLLS.util.elements.recipeInput).val(JSON.stringify(ASSETGENERATOR.FILESYSTEM.base.getActiveRecipe(), undefined, 4));
         });
     }
+
 
     return {
         init: init,
@@ -185,7 +188,13 @@ ASSETGENERATOR.CONTROLLS = ASSETGENERATOR.CONTROLLS || {};
 
 ASSETGENERATOR.CONTROLLS.util = (function() {
     var elements = {
-        inputs: '.js-inputs'
+        inputs: '.js-inputs',
+        recipeBox: '.js-recipe',
+        closeRecipeBox: '.js-close-recipe',
+        showRecipeBox: '.js-show-recipe',
+        updateRecipe: '.js-reload-recipe',
+        recipeInput: '.js-recipe-input',
+
     };
 
     function init(opts) {
@@ -194,7 +203,6 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
 
 
     function createDropdown(elements, classes) {
-        console.log('Ele', elements);
         var $select = $('<select></select>');
         for (ele in elements) {
             var $option = $('<option value="' + elements[ele] +'">' + ele + '</option>');
@@ -206,11 +214,27 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
         return $select;
     }
 
+    function closeRecipeBox() {
+        $(elements.recipeBox).hide();
+    }
+
+    function showRecipeBox() {
+        $(elements.recipeBox).show();
+    }
+
+    function updateRecipe() {
+        ASSETGENERATOR.FILESYSTEM.base.setActiveRecipe(JSON.parse($(elements.recipeInput).val()));
+    }
+
 
     return {
         init: init,
         elements: elements,
-        createDropdown: createDropdown
+        createDropdown: createDropdown,
+        closeRecipeBox: closeRecipeBox,
+        showRecipeBox: showRecipeBox,
+        updateRecipe: updateRecipe,
+
     }
 
 }());
@@ -259,7 +283,10 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
      */
     function updatedFileList(data) {
         fileList = [];
-        for (index in data) {
+        console.log('data', data);
+
+        for (var index in data) {
+            if (!data.hasOwnProperty(index)) continue;
             var json = getJSON(data[index]);
             fileList[json.name] = data[index];
         }
@@ -279,15 +306,22 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
             cache: false
         }).responseText;
         return JSON.parse(json);
-
     }
 
     /**
      * 
      * @param recipeName
      */
-    function setActiveRecipe(recipeName) {
-        activeRecipe = getJSON(recipeName);
+    function setActiveRecipeFromList(recipeName) {
+        setActiveRecipe(getJSON(recipeName));
+    }
+
+    /**
+     *
+     * @param recipe
+     */
+    function setActiveRecipe(recipe) {
+        activeRecipe = recipe;
     }
 
     /**
@@ -308,6 +342,7 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
         init: init,
         getActiveRecipe: getActiveRecipe,
         setActiveRecipe: setActiveRecipe,
+        setActiveRecipeFromList: setActiveRecipeFromList,
         getRecipes: getRecipes,
         getJSON: getJSON
     }
@@ -341,10 +376,20 @@ $(document).ready(function() {
 
     var $dropdown = controlls.util.createDropdown(filesystem.base.getRecipes(), controlls.handlers.hooks.updateActiveRecipe);
     $(controlls.util.elements.inputs).append($dropdown);
+    asset.display.init();
+
+    var recipes = filesystem.base.getRecipes();
+    for(var first in recipes) {
+        var firstRecipe = recipes[first];
+        break;
+    }
+    console.log('first', firstRecipe);
+    filesystem.base.setActiveRecipeFromList(firstRecipe);
+    $(ASSETGENERATOR.CONTROLLS.util.elements.recipeInput).val(JSON.stringify(ASSETGENERATOR.FILESYSTEM.base.getActiveRecipe(), undefined, 4));
+
+
 
     controlls.handlers.init();
 
-    asset.display.init();
-	asset.display.drawGrid();
-	asset.display.drawFace('#cba675', '#312783');
+
 });

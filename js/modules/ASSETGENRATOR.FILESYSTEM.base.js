@@ -42,7 +42,10 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
      */
     function updatedFileList(data) {
         fileList = [];
-        for (index in data) {
+        console.log('data', data);
+
+        for (var index in data) {
+            if (!data.hasOwnProperty(index)) continue;
             var json = getJSON(data[index]);
             fileList[json.name] = data[index];
         }
@@ -62,15 +65,22 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
             cache: false
         }).responseText;
         return JSON.parse(json);
-
     }
 
     /**
      * 
      * @param recipeName
      */
-    function setActiveRecipe(recipeName) {
-        activeRecipe = getJSON(recipeName);
+    function setActiveRecipeFromList(recipeName) {
+        setActiveRecipe(getJSON(recipeName));
+    }
+
+    /**
+     *
+     * @param recipe
+     */
+    function setActiveRecipe(recipe) {
+        activeRecipe = recipe;
     }
 
     /**
@@ -91,6 +101,7 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
         init: init,
         getActiveRecipe: getActiveRecipe,
         setActiveRecipe: setActiveRecipe,
+        setActiveRecipeFromList: setActiveRecipeFromList,
         getRecipes: getRecipes,
         getJSON: getJSON
     }
