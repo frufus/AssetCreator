@@ -15,7 +15,6 @@ ASSETGENERATOR.CONTROLLS.handlers = (function() {
     function updateActiveRecipe() {
         $('.' + hooks.updateActiveRecipe).on('change', function (e) {
             ASSETGENERATOR.FILESYSTEM.base.setActiveRecipe($(this).val())
-            console.log('Changed', $(this).val());
         });
     }
 

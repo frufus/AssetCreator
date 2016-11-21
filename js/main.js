@@ -120,7 +120,6 @@ ASSETGENERATOR.CANVAS.loadRecipe = (function () {
 
     function load() {
         canvas = base.getCanvas();
-        console.log('Active:', ASSETGENERATOR.FILESYSTEM.base.getActiveRecipe());
         activeRecipe = ASSETGENERATOR.FILESYSTEM.base.getActiveRecipe();
 
         if (activeRecipe.height) {
@@ -130,12 +129,16 @@ ASSETGENERATOR.CANVAS.loadRecipe = (function () {
             base.setWidth(activeRecipe.width);
         }
 
-        for (attr in activeRecipe) {
+        for (var attr in activeRecipe) {
             if (activeRecipe.hasOwnProperty(attr)) {
                 if (typeof activeRecipe[attr] === 'object') {
-                    if (activeRecipe[attr].type === 'function' && activeRecipe.hasOwnProperty('function')) {
-                        console.log('Function:', activeRecipe[attr]['function']);
-                        eval(activeRecipe[attr]['function'])();
+                    if (activeRecipe[attr].hasOwnProperty('function')) {
+                        eval('var func = ' + activeRecipe[attr]['function']);
+                        if(typeof func !== 'undefined') {
+                            func();
+                        } else {
+                            console.log('Incorrect function!');
+                        }
                     }
                 }
             }
@@ -167,7 +170,6 @@ ASSETGENERATOR.CONTROLLS.handlers = (function() {
     function updateActiveRecipe() {
         $('.' + hooks.updateActiveRecipe).on('change', function (e) {
             ASSETGENERATOR.FILESYSTEM.base.setActiveRecipe($(this).val())
-            console.log('Changed', $(this).val());
         });
     }
 
@@ -246,7 +248,6 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
             },
             success: function (data) {
                 // List all json file names in the page
-                console.log('DATA', data);
                 updatedFileList(data);
             }
         });
@@ -277,7 +278,6 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
             async: false,
             cache: false
         }).responseText;
-        console.log('JSON:', JSON.parse(json));
         return JSON.parse(json);
 
     }

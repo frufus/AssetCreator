@@ -31,7 +31,6 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
             },
             success: function (data) {
                 // List all json file names in the page
-                console.log('DATA', data);
                 updatedFileList(data);
             }
         });
@@ -62,7 +61,6 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
             async: false,
             cache: false
         }).responseText;
-        console.log('JSON:', JSON.parse(json));
         return JSON.parse(json);
 
     }
