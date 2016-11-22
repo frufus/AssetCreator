@@ -21,9 +21,6 @@ $(document).ready(function() {
     filesystem.base.setActiveRecipeFromList(firstRecipe);
     $(ASSETGENERATOR.CONTROLLS.util.elements.recipeInput).val(JSON.stringify(ASSETGENERATOR.FILESYSTEM.base.getActiveRecipe(), undefined, 4));
 
-
-
     controlls.handlers.init();
-
 
 });
