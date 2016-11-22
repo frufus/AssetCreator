@@ -112,7 +112,7 @@ body {
 
 .recipe-wrapper {
   display: none;
-  position: absolute;
+  position: fixed;
   margin-left: 5vw;
   margin-top: 5vh;
   width: 90vw;
