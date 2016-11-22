@@ -64,7 +64,13 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
             async: false,
             cache: false
         }).responseText;
-        return JSON.parse(json);
+        try {
+            json = JSON.parse(json);
+            return json;
+        } catch (e) {
+            return {};
+        }
+
     }
 
     /**
