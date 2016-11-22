@@ -50,6 +50,49 @@ ASSETGENERATOR.ASSET.display = (function() {
 		context.fillRect(11*mod,7*mod,2*mod,1*mod);
 		
 	}
+	function chooseNose(bright, dark){
+		context.fillStyle = bright;
+		context.fillRect(8*mod, 7*mod, 2*mod, 4*mod);
+		context.fillStyle = dark;
+		
+		
+		var noses =	[
+			function(){
+			context.fillRect(8*mod, 7*mod, 1*mod, 4*mod);
+			context.fillRect(7*mod, 9*mod, 1*mod, 2*mod);
+				
+			},
+			function(){
+			context.fillRect(8*mod, 7*mod, 1*mod, 1*mod);
+			context.fillRect(7*mod, 9*mod, 2*mod, 3*mod);
+				
+			}		
+		];
+		var index = Math.floor(Math.random() * noses.length); 
+		noses[index]();
+		
+	}
+	function getColoredBlocks(startX, startY,width, height, color){
+		var rgb;
+		var hexColor;
+		var mask = new Array(width).fill(new Array(height).fill(false));
+		for(var y = startY; y<= height;y++){
+			for(var x = startX; x<= width; x++){
+				rgb = context.getImageData(x*mod, y*mod, 1, 1).data;
+				hexColor = "#"+ ("000000" + rgbToHex(rgb[0], rgb[1], rgb[2])).slice(-6);
+				if(hexColor == color){
+					img[x][y] = true;
+				}
+				
+			}
+		}
+		return mask;
+	}
+	function rgbToHex(r, g, b) {
+   		if (r > 255 || g > 255 || b > 255)
+        	throw "Invalid color component";
+    	return ((r << 16) | (g << 8) | b).toString(16);
+	}
 
 	function drawBlock(){
 
@@ -120,6 +163,7 @@ ASSETGENERATOR.CANVAS.loadRecipe = (function () {
 
     function load() {
         canvas = base.getCanvas();
+        console.log('Active:', ASSETGENERATOR.FILESYSTEM.base.getActiveRecipe());
         activeRecipe = ASSETGENERATOR.FILESYSTEM.base.getActiveRecipe();
 
         if (activeRecipe.height) {
@@ -129,16 +173,12 @@ ASSETGENERATOR.CANVAS.loadRecipe = (function () {
             base.setWidth(activeRecipe.width);
         }
 
-        for (var attr in activeRecipe) {
+        for (attr in activeRecipe) {
             if (activeRecipe.hasOwnProperty(attr)) {
                 if (typeof activeRecipe[attr] === 'object') {
-                    if (activeRecipe[attr].hasOwnProperty('function')) {
-                        eval('var func = ' + activeRecipe[attr]['function']);
-                        if(typeof func !== 'undefined') {
-                            func();
-                        } else {
-                            console.log('Incorrect function!');
-                        }
+                    if (activeRecipe[attr].type === 'function' && activeRecipe.hasOwnProperty('function')) {
+                        console.log('Function:', activeRecipe[attr]['function']);
+                        eval(activeRecipe[attr]['function'])();
                     }
                 }
             }
@@ -158,8 +198,7 @@ ASSETGENERATOR.CONTROLLS = ASSETGENERATOR.CONTROLLS || {};
 
 ASSETGENERATOR.CONTROLLS.handlers = (function() {
     var hooks = {
-        updateActiveRecipe: 'js-updateActiveRecipe',
-
+        updateActiveRecipe: 'js-updateActiveRecipe'
     };
 
     function init(opts) {
@@ -170,16 +209,15 @@ ASSETGENERATOR.CONTROLLS.handlers = (function() {
 
     function updateActiveRecipe() {
         $('.' + hooks.updateActiveRecipe).on('change', function (e) {
-            ASSETGENERATOR.FILESYSTEM.base.setActiveRecipeFromList($(this).val());
-            $(ASSETGENERATOR.CONTROLLS.util.elements.recipeInput).val(JSON.stringify(ASSETGENERATOR.FILESYSTEM.base.getActiveRecipe(), undefined, 4));
+            ASSETGENERATOR.FILESYSTEM.base.setActiveRecipe($(this).val());
+            console.log('Changed', $(this).val());
         });
     }
-
 
     return {
         init: init,
         hooks: hooks,
-    }
+    };
 
 }());
 
@@ -188,13 +226,7 @@ ASSETGENERATOR.CONTROLLS = ASSETGENERATOR.CONTROLLS || {};
 
 ASSETGENERATOR.CONTROLLS.util = (function() {
     var elements = {
-        inputs: '.js-inputs',
-        recipeBox: '.js-recipe',
-        closeRecipeBox: '.js-close-recipe',
-        showRecipeBox: '.js-show-recipe',
-        updateRecipe: '.js-reload-recipe',
-        recipeInput: '.js-recipe-input',
-
+        inputs: '.js-inputs'
     };
 
     function init(opts) {
@@ -203,6 +235,7 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
 
 
     function createDropdown(elements, classes) {
+        console.log('Ele', elements);
         var $select = $('<select></select>');
         for (ele in elements) {
             var $option = $('<option value="' + elements[ele] +'">' + ele + '</option>');
@@ -214,27 +247,11 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
         return $select;
     }
 
-    function closeRecipeBox() {
-        $(elements.recipeBox).hide();
-    }
-
-    function showRecipeBox() {
-        $(elements.recipeBox).show();
-    }
-
-    function updateRecipe() {
-        ASSETGENERATOR.FILESYSTEM.base.setActiveRecipe(JSON.parse($(elements.recipeInput).val()));
-    }
-
 
     return {
         init: init,
         elements: elements,
-        createDropdown: createDropdown,
-        closeRecipeBox: closeRecipeBox,
-        showRecipeBox: showRecipeBox,
-        updateRecipe: updateRecipe,
-
+        createDropdown: createDropdown
     }
 
 }());
@@ -272,6 +289,7 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
             },
             success: function (data) {
                 // List all json file names in the page
+                console.log('DATA', data);
                 updatedFileList(data);
             }
         });
@@ -283,10 +301,7 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
      */
     function updatedFileList(data) {
         fileList = [];
-        console.log('data', data);
-
-        for (var index in data) {
-            if (!data.hasOwnProperty(index)) continue;
+        for (index in data) {
             var json = getJSON(data[index]);
             fileList[json.name] = data[index];
         }
@@ -305,23 +320,17 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
             async: false,
             cache: false
         }).responseText;
+        console.log('JSON:', JSON.parse(json));
         return JSON.parse(json);
+
     }
 
     /**
      * 
      * @param recipeName
      */
-    function setActiveRecipeFromList(recipeName) {
-        setActiveRecipe(getJSON(recipeName));
-    }
-
-    /**
-     *
-     * @param recipe
-     */
-    function setActiveRecipe(recipe) {
-        activeRecipe = recipe;
+    function setActiveRecipe(recipeName) {
+        activeRecipe = getJSON(recipeName);
     }
 
     /**
@@ -342,10 +351,9 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
         init: init,
         getActiveRecipe: getActiveRecipe,
         setActiveRecipe: setActiveRecipe,
-        setActiveRecipeFromList: setActiveRecipeFromList,
         getRecipes: getRecipes,
         getJSON: getJSON
-    }
+    };
 
 }());
 
@@ -376,20 +384,10 @@ $(document).ready(function() {
 
     var $dropdown = controlls.util.createDropdown(filesystem.base.getRecipes(), controlls.handlers.hooks.updateActiveRecipe);
     $(controlls.util.elements.inputs).append($dropdown);
-    asset.display.init();
-
-    var recipes = filesystem.base.getRecipes();
-    for(var first in recipes) {
-        var firstRecipe = recipes[first];
-        break;
-    }
-    console.log('first', firstRecipe);
-    filesystem.base.setActiveRecipeFromList(firstRecipe);
-    $(ASSETGENERATOR.CONTROLLS.util.elements.recipeInput).val(JSON.stringify(ASSETGENERATOR.FILESYSTEM.base.getActiveRecipe(), undefined, 4));
-
-
 
     controlls.handlers.init();
 
-
+    asset.display.init();
+	asset.display.drawGrid();
+	asset.display.drawFace('#cba675', '#312783');
 });

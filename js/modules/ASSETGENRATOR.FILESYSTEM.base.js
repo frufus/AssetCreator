@@ -104,6 +104,6 @@ ASSETGENERATOR.FILESYSTEM.base = (function() {
         setActiveRecipeFromList: setActiveRecipeFromList,
         getRecipes: getRecipes,
         getJSON: getJSON
-    }
+    };
 
 }());
