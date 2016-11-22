@@ -113,8 +113,8 @@ body {
 .recipe-wrapper {
   display: none;
   position: fixed;
-  margin-left: 5vw;
-  margin-top: 5vh;
+  left: 5vw;
+  top: 5vh;
   width: 90vw;
   height: 90vh;
   background-color: white;
