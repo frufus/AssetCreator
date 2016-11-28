@@ -11,23 +11,28 @@ body {
   height: 100%;
 }
 
-.canvas-wrapper {
-  float: left;
-  height: 100vh;
-  width: 65vw;
+.wrapper {
+  width: 90vw;
+  height: 98vh;
+  margin: 0 auto;
+  padding: 1vw;
 }
 
 .canvas-wrapper {
+  float: left;
+  height: 100%;
+  width: 70%;
   canvas{
     max-width: 100%;
+    border: 2px solid $dark;
   }
 }
+
 .input-wrapper {
   float: left;
-  height: 100vh;
-  width: 30vw;
+  height: 100%;
+  width: 30%;
   padding: 20px;
-  border-left: 2px solid $dark;
   input {
     display: block;
     border-radius: 2px;

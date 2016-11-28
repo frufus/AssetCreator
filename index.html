@@ -4,26 +4,33 @@
     <meta charset="UTF-8">
     <title>Asset Creator</title>
     <link rel="stylesheet" href="css/styles.css"/>
-    <script src ="js/libs/jquery-3.1.1.min.js"></script>
+    <script src="js/libs/jquery-3.1.1.min.js"></script>
     <script src="js/main.js"></script>
 
 </head>
 <body>
+<div class="wrapper">
+
+
     <div class="canvas-wrapper">
         <canvas id="js-canvas"></canvas>
     </div>
     <div class="input-wrapper">
         <div class="js-inputs">
-            <input type="button" onclick="ASSETGENERATOR.CONTROLLS.util.showRecipeBox()" class="js-show-recipe" value="Show Recipe">
+            <input type="button" onclick="ASSETGENERATOR.CONTROLLS.util.showRecipeBox()" class="js-show-recipe"
+                   value="Show Recipe">
             <input type="button" onclick="ASSETGENERATOR.CANVAS.loadRecipe.load()" value="Load Recipe">
             <input type="button" onclick="ASSETGENERATOR.CANVAS.base.getCanvasAsImage()" value="Save as Image">
         </div>
     </div>
     <div class="recipe-wrapper js-recipe">
         <textarea name="recipe-input" class="js-recipe-input"></textarea>
-        <input type="button" onclick="ASSETGENERATOR.CONTROLLS.util.updateRecipe()" class="js-reload-recipe" value="reload">
+        <input type="button" onclick="ASSETGENERATOR.CONTROLLS.util.updateRecipe()" class="js-reload-recipe"
+               value="reload">
         <span class="disclaimer">Changes made here are only temporarily.</span>
-        <input type="button" onclick="ASSETGENERATOR.CONTROLLS.util.closeRecipeBox()" class="js-close-recipe" value="close">
+        <input type="button" onclick="ASSETGENERATOR.CONTROLLS.util.closeRecipeBox()" class="js-close-recipe"
+               value="close">
     </div>
+</div>
 </body>
 </html>
