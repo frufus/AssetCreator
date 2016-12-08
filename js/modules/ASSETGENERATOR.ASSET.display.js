@@ -37,7 +37,7 @@ ASSETGENERATOR.ASSET.display = (function() {
 		canvas = ASSETGENERATOR.CANVAS.base.getCanvas();
 		mod = canvas.width / 16;
 		context = canvas.getContext("2d");
-
+		context.strokeStyle = skinColor;
 		context.fillStyle = skinColor;
 		context.fillRect(5*mod,5*mod,8*mod,6*mod);
 		context.fillRect(6*mod,11*mod,6*mod,2*mod);
@@ -48,7 +48,25 @@ ASSETGENERATOR.ASSET.display = (function() {
 		context.fillStyle = eyeColor;
 		context.fillRect(6*mod,7*mod,2*mod,1*mod);
 		context.fillRect(11*mod,7*mod,2*mod,1*mod);
-		
+	}
+
+	function fillFace(skinColor, eyeColor){
+		canvas = ASSETGENERATOR.CANVAS.base.getCanvas();
+		mod = canvas.width / 16;
+		context = canvas.getContext("2d");
+		context.fillStyle = skinColor;
+		context.beginPath();
+		context.rect(5*mod,5*mod,8*mod,6*mod);
+		context.rect(6*mod,11*mod,6*mod,2*mod);
+		context.rect(7*mod,13*mod,4*mod,1*mod);
+		context.fill();
+
+		context.fillStyle = '#FFFFFF';
+		context.fillRect(5*mod,7*mod,1*mod,1*mod);
+		context.fillRect(10*mod,7*mod,1*mod,1*mod);
+		context.fillStyle = eyeColor;
+		context.fillRect(6*mod,7*mod,2*mod,1*mod);
+		context.fillRect(11*mod,7*mod,2*mod,1*mod);
 	}
 	function chooseNose(bright, dark){
 		context.fillStyle = bright;
@@ -64,7 +82,7 @@ ASSETGENERATOR.ASSET.display = (function() {
 			},
 			function(){
 			context.fillRect(8*mod, 7*mod, 1*mod, 1*mod);
-			context.fillRect(7*mod, 9*mod, 2*mod, 3*mod);
+			context.fillRect(8*mod, 8*mod, 1*mod, 3*mod);
 				
 			}		
 		];
@@ -76,17 +94,22 @@ ASSETGENERATOR.ASSET.display = (function() {
 		var rgb;
 		var hexColor;
 		var mask = new Array(width).fill(new Array(height).fill(false));
-		for(var y = startY; y<= height;y++){
-			for(var x = startX; x<= width; x++){
-				rgb = context.getImageData(x*mod, y*mod, 1, 1).data;
+		for(var y = startY; y< height;y++){
+			for(var x = startX; x< width; x++){
+				rgb = context.getImageData(x*mod+3, y*mod+3, 1, 1).data;
 				hexColor = "#"+ ("000000" + rgbToHex(rgb[0], rgb[1], rgb[2])).slice(-6);
+				//console.log(hexColor);
 				if(hexColor == color){
-					img[x][y] = true;
+					mask[x][y] = true;
 				}
 				
 			}
 		}
 		return mask;
+	}
+	function drawShadow(baseColor){
+		var mask = getColoredBlocks(0,0,16,16,baseColor);
+		console.log(mask[15].toString());
 	}
 	function rgbToHex(r, g, b) {
    		if (r > 255 || g > 255 || b > 255)
@@ -101,7 +124,9 @@ ASSETGENERATOR.ASSET.display = (function() {
         init: init,
         drawGrid: drawGrid,
         drawFace: drawFace,
-        chooseNose: chooseNose
+		fillFace: fillFace,
+        chooseNose: chooseNose,
+		drawShadow: drawShadow
     };
 
 }());
