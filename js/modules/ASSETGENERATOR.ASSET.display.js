@@ -68,6 +68,15 @@ ASSETGENERATOR.ASSET.display = (function() {
 		context.fillRect(6*mod,7*mod,2*mod,1*mod);
 		context.fillRect(11*mod,7*mod,2*mod,1*mod);
 	}
+	function fillHead(skinColor){
+		context.fillStyle = skinColor;
+		context.beginPath();
+		context.rect(5*mod,5*mod,8*mod,6*mod);
+		context.rect(6*mod,11*mod,6*mod,2*mod);
+		context.rect(7*mod,13*mod,4*mod,1*mod);
+		context.fill();
+
+	}
 	function chooseNose(bright, dark){
 		context.fillStyle = bright;
 		context.fillRect(8*mod, 7*mod, 2*mod, 4*mod);
@@ -109,9 +118,25 @@ ASSETGENERATOR.ASSET.display = (function() {
 		}
 		return mask;
 	}
-	function drawShadow(baseColor){
-		var mask = getColoredBlocks(0,0,16,16,baseColor);
+	function drawShadow(baseColor, shadowColor){
+		var startX= 0;
+		var startY =0;
+		var width = 16;
+		var height = 16;
+		var mask = getColoredBlocks(startX,startY,width,height,baseColor);
 		console.log(mask);
+		for(var y = startY; y<height;y++){
+			for(var x = startX; x<width;x++){
+
+				if(mask[y][x]){
+					context.fillStyle = shadowColor;
+					context.fillRect(x*mod, y*mod, mod, mod);
+					break;
+				}
+
+
+			}
+		}
 	}
 	function rgbToHex(r, g, b) {
    		if (r > 255 || g > 255 || b > 255)

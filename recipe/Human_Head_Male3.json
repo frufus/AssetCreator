@@ -2,13 +2,25 @@
   "name": "Human Head Male 3",
   "height": 200,
   "width": 200,
+  "skincolor":[
+    "#ffcc99",
+    "#ffbb99",
+    "#d7955d"
+  ],
+  "eyecolor":[
+    "#002266"
+  ],
+
   "layer1": {
     "type": "function",
-    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillFace('#ffcc99', '#002266');  ASSETGENERATOR.ASSET.display.drawShadow('#ffcc99')}"
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillFace(activeRecipe.skincolor[0], activeRecipe.eyecolor[0]);  ASSETGENERATOR.ASSET.display.drawShadow(activeRecipe.skincolor[0], activeRecipe.skincolor[2])}"
   },
   "layer2":{
     "type": "function",
-    "function": "function func(){ ASSETGENERATOR.ASSET.display.chooseNose('#ffbb99', '#d7955d');}"
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.chooseNose(activeRecipe.skincolor[1], activeRecipe.skincolor[2]);}"
 
+  },
+  "layer3":{
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillHead(activeRecipe.skincolor[0], activeRecipe.skincolor[2]);}"
   }
 }
