@@ -1,7 +1,7 @@
 {
   "name": "Human Head Male 3",
-  "height": 16,
-  "width": 16,
+  "height": 200,
+  "width": 200,
   "layer1": {
     "type": "function",
     "function": "function func(){ ASSETGENERATOR.ASSET.display.drawFace('#000000', '#ffffff');}"

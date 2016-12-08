@@ -22,8 +22,10 @@ ASSETGENERATOR.CANVAS.loadRecipe = (function () {
             if (activeRecipe.hasOwnProperty(attr)) {
                 if (typeof activeRecipe[attr] === 'object') {
                     if (activeRecipe[attr].hasOwnProperty('function')) {
-                        eval('var func = ' + activeRecipe[attr]['function']);
+                        var func;
+                        eval('func = ' + activeRecipe[attr]['function']);
                         if(typeof func !== 'undefined') {
+                            console.log('func:', func);
                             func();
                         } else {
                             console.log('Incorrect function!');
