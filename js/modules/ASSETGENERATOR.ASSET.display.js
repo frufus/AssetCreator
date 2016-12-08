@@ -5,16 +5,16 @@ ASSETGENERATOR.ASSET.display = (function() {
 	var canvas;
 	var context;
 	var mod;
-	
+
 	function init() {
     	canvas = ASSETGENERATOR.CANVAS.base.getCanvas();
     	mod = canvas.width / 16;
     	context = canvas.getContext("2d");
-    	context.strokeStyle = '#DADADA';
-    	context.strokeWidth = 1;
 	}
 	
 	function drawGrid(){
+		context.strokeStyle = '#DADADA';
+		context.strokeWidth = 1;
 		for(var i= 0; i <= canvas.width; i++){
 			if(i % mod ==0){
 				drawVerticalLine(context,i);
@@ -32,7 +32,12 @@ ASSETGENERATOR.ASSET.display = (function() {
 		ctx.lineTo(canvas.width, y);
 		ctx.stroke();
 	}
+
 	function drawFace(skinColor, eyeColor){
+		canvas = ASSETGENERATOR.CANVAS.base.getCanvas();
+		mod = canvas.width / 16;
+		context = canvas.getContext("2d");
+
 		context.fillStyle = skinColor;
 		context.fillRect(5*mod,5*mod,8*mod,6*mod);
 		context.fillRect(6*mod,11*mod,6*mod,2*mod);

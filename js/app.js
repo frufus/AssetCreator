@@ -7,6 +7,7 @@ filesystem = ag.FILESYSTEM || {};
 $(document).ready(function() {
     canvas.base.init()
     filesystem.base.init();
+    asset.display.init();
 
     var $dropdown = controlls.util.createDropdown(filesystem.base.getRecipes(), controlls.handlers.hooks.updateActiveRecipe);
     $(controlls.util.elements.inputs).append($dropdown);

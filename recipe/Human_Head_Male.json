@@ -6,19 +6,15 @@
 	"eyecolor": ["#dadada"],
 	"layers": [
 	    "layer1": {
-	    	"name": "face"
+	    	"name": "face",
 			"type": "function",
-			"function": "(function(){ "+
-				"ASSETGENERATOR.ASSET.display.drawFace($(this)[skincolor][0],$(this)[eyecolor][0])"+
-			"})",
+			"function": "(function(){ ASSETGENERATOR.ASSET.display.drawFace('#cba675','#dadada')})"
 			
 	    },
 	    "layer2": {
 	        "name": "Nose",
 	        "type": "function",
-	        "function": "(function() {"+
-	            "ASSETGENERATOR.ASSET.display.chooseNose($(this)[skincolor[0],$(this)[skincolor[1]])"+
-	        "})",
+	        "function": "(function() {ASSETGENERATOR.ASSET.display.chooseNose("#cba675","#dadada")})"
 	     },
 	]
 }
