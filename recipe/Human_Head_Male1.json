@@ -2,6 +2,10 @@
   "name": "Human Head Male 1",
   "height": 200,
   "width": 200,
+  "attributes": {
+    "skincolor": "",
+    "eyecolor": ""
+  },
   "skincolor": [
     "#cba675",
     "#dadada"

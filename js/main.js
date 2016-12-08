@@ -10,16 +10,16 @@ ASSETGENERATOR.ASSET.display = (function() {
 	var canvas;
 	var context;
 	var mod;
-	
+
 	function init() {
     	canvas = ASSETGENERATOR.CANVAS.base.getCanvas();
     	mod = canvas.width / 16;
     	context = canvas.getContext("2d");
-    	context.strokeStyle = '#DADADA';
-    	context.strokeWidth = 1;
 	}
 	
 	function drawGrid(){
+		context.strokeStyle = '#DADADA';
+		context.strokeWidth = 1;
 		for(var i= 0; i <= canvas.width; i++){
 			if(i % mod ==0){
 				drawVerticalLine(context,i);
@@ -37,7 +37,12 @@ ASSETGENERATOR.ASSET.display = (function() {
 		ctx.lineTo(canvas.width, y);
 		ctx.stroke();
 	}
+
 	function drawFace(skinColor, eyeColor){
+		canvas = ASSETGENERATOR.CANVAS.base.getCanvas();
+		mod = canvas.width / 16;
+		context = canvas.getContext("2d");
+		context.strokeStyle = skinColor;
 		context.fillStyle = skinColor;
 		context.fillRect(5*mod,5*mod,8*mod,6*mod);
 		context.fillRect(6*mod,11*mod,6*mod,2*mod);
@@ -48,7 +53,25 @@ ASSETGENERATOR.ASSET.display = (function() {
 		context.fillStyle = eyeColor;
 		context.fillRect(6*mod,7*mod,2*mod,1*mod);
 		context.fillRect(11*mod,7*mod,2*mod,1*mod);
-		
+	}
+
+	function fillFace(skinColor, eyeColor){
+		canvas = ASSETGENERATOR.CANVAS.base.getCanvas();
+		mod = canvas.width / 16;
+		context = canvas.getContext("2d");
+		context.fillStyle = skinColor;
+		context.beginPath();
+		context.rect(5*mod,5*mod,8*mod,6*mod);
+		context.rect(6*mod,11*mod,6*mod,2*mod);
+		context.rect(7*mod,13*mod,4*mod,1*mod);
+		context.fill();
+
+		context.fillStyle = '#FFFFFF';
+		context.fillRect(5*mod,7*mod,1*mod,1*mod);
+		context.fillRect(10*mod,7*mod,1*mod,1*mod);
+		context.fillStyle = eyeColor;
+		context.fillRect(6*mod,7*mod,2*mod,1*mod);
+		context.fillRect(11*mod,7*mod,2*mod,1*mod);
 	}
 	function chooseNose(bright, dark){
 		context.fillStyle = bright;
@@ -64,7 +87,7 @@ ASSETGENERATOR.ASSET.display = (function() {
 			},
 			function(){
 			context.fillRect(8*mod, 7*mod, 1*mod, 1*mod);
-			context.fillRect(7*mod, 9*mod, 2*mod, 3*mod);
+			context.fillRect(8*mod, 8*mod, 1*mod, 3*mod);
 				
 			}		
 		];
@@ -75,18 +98,25 @@ ASSETGENERATOR.ASSET.display = (function() {
 	function getColoredBlocks(startX, startY,width, height, color){
 		var rgb;
 		var hexColor;
-		var mask = new Array(width).fill(new Array(height).fill(false));
-		for(var y = startY; y<= height;y++){
-			for(var x = startX; x<= width; x++){
-				rgb = context.getImageData(x*mod, y*mod, 1, 1).data;
+		var mask = [];
+		for(var y = startY; y< width;y++){
+			var tmp = [];
+			for(var x = startX; x< height; x++){
+				rgb = context.getImageData(x*mod+3, y*mod+3, 1, 1).data;
 				hexColor = "#"+ ("000000" + rgbToHex(rgb[0], rgb[1], rgb[2])).slice(-6);
 				if(hexColor == color){
-					img[x][y] = true;
+					tmp[x] = true;
+				} else {
+					tmp[x] = false;
 				}
-				
 			}
+			mask[y] = tmp;
 		}
 		return mask;
+	}
+	function drawShadow(baseColor){
+		var mask = getColoredBlocks(0,0,16,16,baseColor);
+		console.log(mask);
 	}
 	function rgbToHex(r, g, b) {
    		if (r > 255 || g > 255 || b > 255)
@@ -101,7 +131,9 @@ ASSETGENERATOR.ASSET.display = (function() {
         init: init,
         drawGrid: drawGrid,
         drawFace: drawFace,
-        chooseNose: chooseNose
+		fillFace: fillFace,
+        chooseNose: chooseNose,
+		drawShadow: drawShadow
     };
 
 }());
@@ -275,7 +307,7 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
         showRecipeBox: '.js-show-recipe',
         updateRecipe: '.js-reload-recipe',
         recipeInput: '.js-recipe-input',
-
+        dynamicInputs : '.js-dynamics'
     };
 
     function init(opts) {
@@ -293,6 +325,10 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
             $select.addClass(classes);
         }
         return $select;
+    }
+
+    function addInput(name) {
+
     }
 
     function closeRecipeBox() {
@@ -461,6 +497,7 @@ filesystem = ag.FILESYSTEM || {};
 $(document).ready(function() {
     canvas.base.init()
     filesystem.base.init();
+    asset.display.init();
 
     var $dropdown = controlls.util.createDropdown(filesystem.base.getRecipes(), controlls.handlers.hooks.updateActiveRecipe);
     $(controlls.util.elements.inputs).append($dropdown);
@@ -473,8 +510,8 @@ $(document).ready(function() {
     }
     filesystem.base.setActiveRecipeFromList(firstRecipe);
     $(ASSETGENERATOR.CONTROLLS.util.elements.recipeInput).val(JSON.stringify(ASSETGENERATOR.FILESYSTEM.base.getActiveRecipe(), undefined, 4));
-    ASSETGENERATOR.ASSET.display.drawGrid();
-    ASSETGENERATOR.ASSET.display.drawFace('#cba675', '#312783');
+    // ASSETGENERATOR.ASSET.display.drawGrid();
+    // ASSETGENERATOR.ASSET.display.drawFace('#cba675', '#312783');
     controlls.handlers.init();
 
 });

@@ -93,23 +93,25 @@ ASSETGENERATOR.ASSET.display = (function() {
 	function getColoredBlocks(startX, startY,width, height, color){
 		var rgb;
 		var hexColor;
-		var mask = new Array(width).fill(new Array(height).fill(false));
-		for(var y = startY; y< height;y++){
-			for(var x = startX; x< width; x++){
+		var mask = [];
+		for(var y = startY; y< width;y++){
+			var tmp = [];
+			for(var x = startX; x< height; x++){
 				rgb = context.getImageData(x*mod+3, y*mod+3, 1, 1).data;
 				hexColor = "#"+ ("000000" + rgbToHex(rgb[0], rgb[1], rgb[2])).slice(-6);
-				//console.log(hexColor);
 				if(hexColor == color){
-					mask[x][y] = true;
+					tmp[x] = true;
+				} else {
+					tmp[x] = false;
 				}
-				
 			}
+			mask[y] = tmp;
 		}
 		return mask;
 	}
 	function drawShadow(baseColor){
 		var mask = getColoredBlocks(0,0,16,16,baseColor);
-		console.log(mask[15].toString());
+		console.log(mask);
 	}
 	function rgbToHex(r, g, b) {
    		if (r > 255 || g > 255 || b > 255)

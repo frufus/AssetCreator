@@ -20,8 +20,8 @@ $(document).ready(function() {
     }
     filesystem.base.setActiveRecipeFromList(firstRecipe);
     $(ASSETGENERATOR.CONTROLLS.util.elements.recipeInput).val(JSON.stringify(ASSETGENERATOR.FILESYSTEM.base.getActiveRecipe(), undefined, 4));
-    ASSETGENERATOR.ASSET.display.drawGrid();
-    ASSETGENERATOR.ASSET.display.drawFace('#cba675', '#312783');
+    // ASSETGENERATOR.ASSET.display.drawGrid();
+    // ASSETGENERATOR.ASSET.display.drawFace('#cba675', '#312783');
     controlls.handlers.init();
 
 });

@@ -9,7 +9,7 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
         showRecipeBox: '.js-show-recipe',
         updateRecipe: '.js-reload-recipe',
         recipeInput: '.js-recipe-input',
-
+        dynamicInputs : '.js-dynamics'
     };
 
     function init(opts) {
@@ -27,6 +27,10 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
             $select.addClass(classes);
         }
         return $select;
+    }
+
+    function addInput(name) {
+
     }
 
     function closeRecipeBox() {
