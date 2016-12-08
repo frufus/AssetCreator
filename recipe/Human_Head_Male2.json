@@ -4,6 +4,6 @@
   "width": 16,
   "layer1": {
     "type": "function",
-    "function": "function func(){ ASSETGENERATOR.ASSET.display.drawFace('#000000', '#ffffff');}"
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.drawGrid();}"
   }
 }
