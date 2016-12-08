@@ -39,6 +39,7 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
 
     function updateRecipe() {
         ASSETGENERATOR.FILESYSTEM.base.setActiveRecipe(JSON.parse($(elements.recipeInput).val()));
+        ASSETGENERATOR.CANVAS.loadRecipe.load();
     }
 
 

@@ -100,7 +100,8 @@ ASSETGENERATOR.ASSET.display = (function() {
     return {
         init: init,
         drawGrid: drawGrid,
-        drawFace: drawFace
+        drawFace: drawFace,
+        chooseNose: chooseNose
     };
 
 }());

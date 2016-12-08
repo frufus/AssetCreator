@@ -1,0 +1,22 @@
+{
+  "name": "Human Head Male 1",
+  "height": 200,
+  "width": 200,
+  "skincolor": [
+    "#cba675",
+    "#dadada"
+  ],
+  "eyecolor": [
+    "#dadada"
+  ],
+  "layer1": {
+    "name": "face",
+    "type": "function",
+    "function": "function(){ console.log(activeRecipe.skincolor[0], activeRecipe.eyecolor[0])}"
+  },
+  "layer2": {
+    "name": "Nose",
+    "type": "function",
+    "function": "function() { ASSETGENERATOR.ASSET.display.chooseNose(activeRecipe.skincolor[0], activeRecipe.skincolor[1])}"
+  }
+}

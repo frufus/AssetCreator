@@ -100,7 +100,8 @@ ASSETGENERATOR.ASSET.display = (function() {
     return {
         init: init,
         drawGrid: drawGrid,
-        drawFace: drawFace
+        drawFace: drawFace,
+        chooseNose: chooseNose
     };
 
 }());
@@ -211,8 +212,10 @@ ASSETGENERATOR.CANVAS.loadRecipe = (function () {
             if (activeRecipe.hasOwnProperty(attr)) {
                 if (typeof activeRecipe[attr] === 'object') {
                     if (activeRecipe[attr].hasOwnProperty('function')) {
-                        eval('var func = ' + activeRecipe[attr]['function']);
+                        var func;
+                        eval('func = ' + activeRecipe[attr]['function']);
                         if(typeof func !== 'undefined') {
+                            console.log('func:', func);
                             func();
                         } else {
                             console.log('Incorrect function!');
@@ -302,6 +305,7 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
 
     function updateRecipe() {
         ASSETGENERATOR.FILESYSTEM.base.setActiveRecipe(JSON.parse($(elements.recipeInput).val()));
+        ASSETGENERATOR.CANVAS.loadRecipe.load();
     }
 
 
