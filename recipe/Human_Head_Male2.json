@@ -2,8 +2,30 @@
   "name": "Human Head Male 2",
   "height": 200,
   "width": 200,
-  "layer1": {
-    "type": "function",
-    "function": "function func(){ ASSETGENERATOR.ASSET.display.drawGrid();}"
+  "skincolor":[
+    "#df9a47",
+    "#e9ab60",
+    "#c8842f"
+  ],
+  "eyecolor":[
+    "#543917",
+    "#773a1c",
+    "#444748"
+  ],
+
+  "Head": {
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillHead(activeRecipe.skincolor[0], activeRecipe.skincolor[2]);}"
+  },
+  "Profile": {
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillProfile(activeRecipe.skincolor[0]);}"
+  },
+  "Jaw": {
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillJaw(activeRecipe.skincolor[0]);}"
+  },
+  "Face":{
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillFace(activeRecipe.skincolor[0], activeRecipe.eyecolor[Math.floor(Math.random() *3)]);  ASSETGENERATOR.ASSET.display.drawShadow(activeRecipe.skincolor[0], activeRecipe.skincolor[2])}"
+  },
+  "Nose":{
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.chooseNose(activeRecipe.skincolor[1], activeRecipe.skincolor[2]);}"
   }
 }

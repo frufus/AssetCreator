@@ -3,12 +3,14 @@
   "height": 200,
   "width": 200,
   "skincolor":[
-    "#ffcc99",
-    "#ffbb99",
-    "#d7955d"
+    "#edc094",
+    "#e9b091",
+    "#e4b17c"
   ],
   "eyecolor":[
-    "#002266"
+    "#002266",
+    "#53b270",
+    "#707b81"
   ],
 
   "Head": {
@@ -21,7 +23,7 @@
     "function": "function func(){ ASSETGENERATOR.ASSET.display.fillJaw(activeRecipe.skincolor[0]);}"
   },
   "Face":{
-    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillFace(activeRecipe.skincolor[0], activeRecipe.eyecolor[0]);  ASSETGENERATOR.ASSET.display.drawShadow(activeRecipe.skincolor[0], activeRecipe.skincolor[2])}"
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillFace(activeRecipe.skincolor[0], activeRecipe.eyecolor[Math.floor(Math.random() *activeRecipe.eyecolor.length)]);  ASSETGENERATOR.ASSET.display.drawShadow(activeRecipe.skincolor[0], activeRecipe.skincolor[2])}"
   },
   "Nose":{
     "function": "function func(){ ASSETGENERATOR.ASSET.display.chooseNose(activeRecipe.skincolor[1], activeRecipe.skincolor[2]);}"
