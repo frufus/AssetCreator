@@ -11,16 +11,19 @@
     "#002266"
   ],
 
-  "layer1": {
-    "type": "function",
+  "Head": {
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillHead(activeRecipe.skincolor[0], activeRecipe.skincolor[2]);}"
+  },
+  "Profile": {
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillProfile(activeRecipe.skincolor[0]);}"
+  },
+  "Jaw": {
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillJaw(activeRecipe.skincolor[0]);}"
+  },
+  "Face":{
     "function": "function func(){ ASSETGENERATOR.ASSET.display.fillFace(activeRecipe.skincolor[0], activeRecipe.eyecolor[0]);  ASSETGENERATOR.ASSET.display.drawShadow(activeRecipe.skincolor[0], activeRecipe.skincolor[2])}"
   },
-  "layer2":{
-    "type": "function",
+  "Nose":{
     "function": "function func(){ ASSETGENERATOR.ASSET.display.chooseNose(activeRecipe.skincolor[1], activeRecipe.skincolor[2]);}"
-
-  },
-  "layer3":{
-    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillHead(activeRecipe.skincolor[0], activeRecipe.skincolor[2]);}"
   }
 }
