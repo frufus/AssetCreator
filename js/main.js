@@ -132,21 +132,28 @@ ASSETGENERATOR.ASSET.display = function () {
 		context.fillStyle = bright;
 		context.fillRect(8 * mod, 7 * mod, 2 * mod, 4 * mod);
 		context.fillStyle = dark;
-
+		context.beginPath();
 		var noses = [
 			function () {
-				context.fillRect(8 * mod, 7 * mod, 1 * mod, 4 * mod);
-				context.fillRect(7 * mod, 9 * mod, 1 * mod, 2 * mod);
+
+				context.rect(8 * mod, 7 * mod, 1 * mod, 4 * mod);
+				context.rect(7 * mod, 9 * mod, 1 * mod, 2 * mod);
 
 			},
 			function () {
-				context.fillRect(8 * mod, 7 * mod, 1 * mod, 1 * mod);
-				context.fillRect(8 * mod, 8 * mod, 1 * mod, 3 * mod);
+				context.rect(8 * mod, 7 * mod, 1 * mod, 1 * mod);
+				context.rect(8 * mod, 8 * mod, 1 * mod, 3 * mod);
+
+			},
+			function () {
+				context.rect(8 * mod, 7* mod, 1 * mod, 4 * mod);
+				context.rect(9 * mod, 8 * mod, 1 * mod, 1 * mod);
 
 			}
 		];
 		var index = Math.floor(Math.random() * noses.length);
 		noses[index]();
+		context.fill();
 
 	}
 
