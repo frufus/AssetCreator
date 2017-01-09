@@ -2,25 +2,31 @@
   "name": "Human Head Male 1",
   "height": 200,
   "width": 200,
-  "attributes": {
-    "skincolor": "",
-    "eyecolor": ""
-  },
-  "skincolor": [
-    "#cba675",
-    "#dadada"
+  "skincolor":[
+    "#df9a47",
+    "#e9ab60",
+    "#c8842f"
   ],
-  "eyecolor": [
-    "#dadada"
+  "eyecolor":[
+    "#543917",
+    "#773a1c",
+    "#444748",
+    "#24763f"
   ],
-  "layer1": {
-    "name": "face",
-    "type": "function",
-    "function": "function(){ console.log(activeRecipe.skincolor[0], activeRecipe.eyecolor[0])}"
+
+  "Head": {
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillHead(activeRecipe.skincolor, activeRecipe.skincolor);}"
   },
-  "layer2": {
-    "name": "Nose",
-    "type": "function",
-    "function": "function() { ASSETGENERATOR.ASSET.display.chooseNose(activeRecipe.skincolor[0], activeRecipe.skincolor[1])}"
+  "Profile": {
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillProfile(activeRecipe.skincolor);}"
+  },
+  "Jaw": {
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillJaw(activeRecipe.skincolor);}"
+  },
+  "Face":{
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillFace(activeRecipe.skincolor, activeRecipe.eyecolor);  ASSETGENERATOR.ASSET.display.drawShadow(activeRecipe.skincolor, activeRecipe.skincolor)}"
+  },
+  "Nose":{
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.chooseNose(activeRecipe.skincolor, activeRecipe.skincolor);}"
   }
 }

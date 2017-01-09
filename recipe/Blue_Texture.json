@@ -1,0 +1,44 @@
+{
+  "name": "Blue Texture",
+  "height": 200,
+  "width": 200,
+  "layer1":[
+    "#89CFF0",
+    "#ADD8E6",
+    "#CCCCFF",
+    "#B0E0E6",
+    "#0000FF"
+  ],
+  "layer2":[
+    "#333399",
+    "#0087BD",
+    "#0093AF",
+    "#0018A8"
+  ],
+  "layer3":[
+    "#1F75FE",
+    "#0000CD",
+    "#0070BB",
+    "#545AA7"
+  ],
+  "layer4":[
+    "#1034A6",
+    "#3F00FF",
+    "#00008B",
+    "#002387"
+  ],
+
+  "Layer1": {
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillBackground(activeRecipe.layer1);}"
+  },
+  "Layer2": {
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.randomBlocks(activeRecipe.layer2);}"
+  },
+  "Layer3": {
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.randomBlocks(activeRecipe.layer3);}"
+  },
+  "Layer4": {
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.randomBlocks(activeRecipe.layer4);}"
+  }
+
+}

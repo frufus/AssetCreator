@@ -197,14 +197,52 @@ ASSETGENERATOR.ASSET.display = function () {
 		}
 	}
 
+	function fillBackgrund(color) {
+        context.fillStyle = color;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function randomBlocks(color) {
+		for(var x = 0; x < 500; x++) {
+			randomBlock(color);
+		}
+    }
+
+    function randomBlock(color) {
+		var opacity = Math.random().toString().slice(0, 4);
+        context.fillStyle = hexToRgba(color, opacity);
+        var min = 0;
+        var xStart = Math.floor(Math.random() * (canvas.width - min));
+        var xEnd = (Math.floor(Math.random() * (canvas.width - xStart + 1)) + xStart) % 10;
+        var yStart = Math.floor(Math.random() * (canvas.height - min));
+        var yEnd = (Math.floor(Math.random() * (canvas.height - yStart + 1)) + yStart) % 10;
+        context.fillRect(xStart, yStart, xEnd, yEnd);
+    }
+
 	function rgbToHex(r, g, b) {
 		if (r > 255 || g > 255 || b > 255)
 			throw "Invalid color component";
 		return ((r << 16) | (g << 8) | b).toString(16);
 	}
 
-	function drawBlock() {
+    function hexToRgb(hex) {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? 'rgb(' + parseInt(result[1], 16) + ', ' + parseInt(result[2], 16) + ', '  + parseInt(result[3], 16) + ')' : null;
+    }
 
+    function hexToRgba(hex, opacity) {
+		var c;
+        if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+            c= hex.substring(1).split('');
+            if(c.length== 3){
+                c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+            }
+            c= '0x'+c.join('');
+            return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',' + opacity + ')';
+        }
+	}
+
+	function drawBlock() {
 	}
 
 	return {
@@ -217,7 +255,9 @@ ASSETGENERATOR.ASSET.display = function () {
 		fillProfile: fillProfile,
 		chooseNose: chooseNose,
 		chooseEyeColor: chooseEyeColor,
-		drawShadow: drawShadow
+		drawShadow: drawShadow,
+		fillBackground: fillBackgrund,
+		randomBlocks: randomBlocks
 	};
 
 }();

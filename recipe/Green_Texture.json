@@ -1,0 +1,44 @@
+{
+  "name": "Green Texture",
+  "height": 200,
+  "width": 200,
+  "layer1":[
+    "#568203",
+    "#4F7942",
+    "#228B22",
+    "#74C365",
+    "#71BC78"
+  ],
+  "layer2":[
+    "#8A9A5B",
+    "#4A5D23",
+    "#01796F",
+    "#008000"
+  ],
+  "layer3":[
+    "#006400",
+    "#4A5D23",
+    "#228B22",
+    "#008000"
+  ],
+  "layer4":[
+    "#006400",
+    "#00A550",
+    "#00A877",
+    "#4B5320"
+  ],
+
+  "Layer1": {
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillBackground(activeRecipe.layer1);}"
+  },
+  "Layer2": {
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.randomBlocks(activeRecipe.layer2);}"
+  },
+  "Layer3": {
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.randomBlocks(activeRecipe.layer3);}"
+  },
+  "Layer4": {
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.randomBlocks(activeRecipe.layer4);}"
+  }
+
+}
