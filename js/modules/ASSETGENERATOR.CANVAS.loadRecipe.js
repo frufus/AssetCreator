@@ -22,12 +22,30 @@ ASSETGENERATOR.CANVAS.loadRecipe = (function () {
         /**
          * copy all arrays an replace them with a single value
          */
-        activeRecipe.arrays = {};
+        if (typeof activeRecipe.arrays === 'undefined') {
+            activeRecipe.arrays = {};
+        }
         for (var attr in activeRecipe) {
             if (activeRecipe.hasOwnProperty(attr)) {
-                if (Object.prototype.toString.call(activeRecipe[attr]) === '[object Array]') {
-                    activeRecipe.arrays[attr] = activeRecipe[attr];
-                    activeRecipe[attr] = randomFromArray(activeRecipe.arrays[attr]);
+                if (activeRecipe[attr] instanceof Array || typeof activeRecipe[attr] === 'string') {
+                    if (activeRecipe[attr] instanceof Array) {
+                        activeRecipe.arrays[attr] = activeRecipe[attr];
+                        activeRecipe[attr] = randomFromArray(activeRecipe.arrays[attr]);
+                    }
+                    var input;
+                    if (/^#[0-9A-F]{6}$/i.test(activeRecipe[attr])) {
+                        input = ASSETGENERATOR.CONTROLLS.util.addInput(activeRecipe[attr], 'color', attr, 'js-attr-' + attr);
+                    } else {
+                        input = ASSETGENERATOR.CONTROLLS.util.addInput(activeRecipe[attr], 'text', attr, 'js-attr-' + attr);
+                    }
+                    if (typeof activeRecipe.arrays[attr] !== 'undefined') {
+                        var select = ASSETGENERATOR.CONTROLLS.util.createDropdown(activeRecipe.arrays[attr], 'js-attr-' + attr, attr, true);
+                        ASSETGENERATOR.CONTROLLS.util.addToArrays(select);
+                        ASSETGENERATOR.CONTROLLS.handlers.arrayDropdown(select);
+                    }
+
+                    ASSETGENERATOR.CONTROLLS.util.addToControlls(input);
+                    ASSETGENERATOR.CONTROLLS.handlers.dynamicInputs(input);
                 }
             }
         }
@@ -50,22 +68,6 @@ ASSETGENERATOR.CANVAS.loadRecipe = (function () {
                 }
             }
         }
-
-        for (var attr in activeRecipe) {
-            if (activeRecipe.hasOwnProperty(attr)) {
-                if (Object.prototype.toString.call(activeRecipe[attr]) === '[object String]') {
-                    var input;
-                    if (/^#[0-9A-F]{6}$/i.test(activeRecipe[attr])) {
-                        input = ASSETGENERATOR.CONTROLLS.util.addInput(activeRecipe[attr], 'color', attr ,'js-attr-' + attr);
-                    } else {
-                        input = ASSETGENERATOR.CONTROLLS.util.addInput(activeRecipe[attr], 'text', attr, 'js-attr-' + attr);
-                    }
-                    ASSETGENERATOR.CONTROLLS.util.addToControlls(input);
-                    ASSETGENERATOR.CONTROLLS.handlers.dynamicInputs(input);
-                }
-            }
-        }
-
     }
 
     /**

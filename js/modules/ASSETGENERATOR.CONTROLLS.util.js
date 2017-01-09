@@ -9,7 +9,8 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
         showRecipeBox: '.js-show-recipe',
         updateRecipe: '.js-reload-recipe',
         recipeInput: '.js-recipe-input',
-        dynamicInputs : '.js-dynamics'
+        dynamicInputs : '.js-dynamics',
+        dynamicArrays : '.js-arrays'
     };
 
     function init(opts) {
@@ -17,12 +18,23 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
     }
 
 
-    function createDropdown(elements, classes) {
+    function createDropdown(elements, classes, label, noIndex) {
         var $select = $('<select></select>');
-        for (ele in elements) {
-            var $option = $('<option value="' + elements[ele] +'">' + ele + '</option>');
+        for (var ele in elements) {
+            var $option;
+            if(noIndex) {
+                $option = $('<option value="' + elements[ele] +'">' + elements[ele] + '</option>');
+            } else {
+                $option = $('<option value="' + elements[ele] +'">' + ele + '</option>');
+            }
             $select.append($option);
         }
+
+        if(typeof label !== 'undefined') {
+            var $label = $('<label for="' + label + '">' + label + '</label>');
+            $select = $label.append($select);
+        }
+
         if(classes) {
             $select.addClass(classes);
         }
@@ -65,8 +77,13 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
         $(elements.dynamicInputs).append(element);
     }
 
+    function addToArrays(element) {
+        $(elements.dynamicArrays).append(element);
+    }
+
     function emptyControlls() {
         $(elements.dynamicInputs).empty();
+        $(elements.dynamicArrays).empty();
     }
 
 
@@ -79,6 +96,7 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
         updateRecipe: updateRecipe,
         addInput: addInput,
         addToControlls: addToControlls,
+        addToArrays: addToArrays,
         emptyControlls: emptyControlls,
     }
 

@@ -1,13 +1,13 @@
 var ASSETGENERATOR = ASSETGENERATOR || {};
 ASSETGENERATOR.CONTROLLS = ASSETGENERATOR.CONTROLLS || {};
 
-ASSETGENERATOR.CONTROLLS.handlers = (function() {
+ASSETGENERATOR.CONTROLLS.handlers = (function () {
     var hooks = {
         updateActiveRecipe: 'js-updateActiveRecipe',
     };
 
     function init(opts) {
-        for(var hook in hooks) {
+        for (var hook in hooks) {
             eval(hook)();
         }
     }
@@ -22,16 +22,27 @@ ASSETGENERATOR.CONTROLLS.handlers = (function() {
     function dynamicInput(input) {
         $(input, $('.js-dynamics')).on('change input move', function (e) {
             var $ele = $(this);
-            if($ele[0].tagName == 'LABEL') {
+            if ($ele[0].tagName == 'LABEL') {
                 $ele = $('input', $(this));
             }
             var value = $ele.val();
             var attr = $ele.attr('name');
-            console.log('ele', $ele);
             var recipe = ASSETGENERATOR.FILESYSTEM.base.getActiveRecipe();
             recipe[attr] = value;
             ASSETGENERATOR.FILESYSTEM.base.setActiveRecipe(recipe);
             ASSETGENERATOR.CANVAS.loadRecipe.load();
+        });
+    }
+
+    function arrayDropdown(select) {
+        $(select).on('change', function (e) {
+            var $target = $('input.' + $(this).attr("class"), $('.js-dynamics'));
+            var $ele = $(this);
+            if ($ele[0].tagName == 'LABEL') {
+                $ele = $('select', $(this));
+            }
+            $target.val($ele.val());
+            $target.trigger('change');
         });
     }
 
@@ -40,6 +51,7 @@ ASSETGENERATOR.CONTROLLS.handlers = (function() {
         init: init,
         hooks: hooks,
         dynamicInputs: dynamicInput,
+        arrayDropdown: arrayDropdown,
     }
 
 }());

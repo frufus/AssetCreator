@@ -85,6 +85,18 @@ body {
   padding: 20px;
 }
 
+h3 {
+  margin-top: 10px;
+}
+
+.dynamics, .arrays {
+  box-sizing: border-box;
+  border: 1px solid #1c8f0d;
+  min-height: 20px;
+  min-width: 100%;
+  padding: 2px;
+}
+
 .recipe-wrapper {
   display: none;
   position: fixed;

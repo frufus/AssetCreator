@@ -329,12 +329,30 @@ ASSETGENERATOR.CANVAS.loadRecipe = (function () {
         /**
          * copy all arrays an replace them with a single value
          */
-        activeRecipe.arrays = {};
+        if (typeof activeRecipe.arrays === 'undefined') {
+            activeRecipe.arrays = {};
+        }
         for (var attr in activeRecipe) {
             if (activeRecipe.hasOwnProperty(attr)) {
-                if (Object.prototype.toString.call(activeRecipe[attr]) === '[object Array]') {
-                    activeRecipe.arrays[attr] = activeRecipe[attr];
-                    activeRecipe[attr] = randomFromArray(activeRecipe.arrays[attr]);
+                if (activeRecipe[attr] instanceof Array || typeof activeRecipe[attr] === 'string') {
+                    if (activeRecipe[attr] instanceof Array) {
+                        activeRecipe.arrays[attr] = activeRecipe[attr];
+                        activeRecipe[attr] = randomFromArray(activeRecipe.arrays[attr]);
+                    }
+                    var input;
+                    if (/^#[0-9A-F]{6}$/i.test(activeRecipe[attr])) {
+                        input = ASSETGENERATOR.CONTROLLS.util.addInput(activeRecipe[attr], 'color', attr, 'js-attr-' + attr);
+                    } else {
+                        input = ASSETGENERATOR.CONTROLLS.util.addInput(activeRecipe[attr], 'text', attr, 'js-attr-' + attr);
+                    }
+                    if (typeof activeRecipe.arrays[attr] !== 'undefined') {
+                        var select = ASSETGENERATOR.CONTROLLS.util.createDropdown(activeRecipe.arrays[attr], 'js-attr-' + attr, attr, true);
+                        ASSETGENERATOR.CONTROLLS.util.addToArrays(select);
+                        ASSETGENERATOR.CONTROLLS.handlers.arrayDropdown(select);
+                    }
+
+                    ASSETGENERATOR.CONTROLLS.util.addToControlls(input);
+                    ASSETGENERATOR.CONTROLLS.handlers.dynamicInputs(input);
                 }
             }
         }
@@ -357,22 +375,6 @@ ASSETGENERATOR.CANVAS.loadRecipe = (function () {
                 }
             }
         }
-
-        for (var attr in activeRecipe) {
-            if (activeRecipe.hasOwnProperty(attr)) {
-                if (Object.prototype.toString.call(activeRecipe[attr]) === '[object String]') {
-                    var input;
-                    if (/^#[0-9A-F]{6}$/i.test(activeRecipe[attr])) {
-                        input = ASSETGENERATOR.CONTROLLS.util.addInput(activeRecipe[attr], 'color', attr ,'js-attr-' + attr);
-                    } else {
-                        input = ASSETGENERATOR.CONTROLLS.util.addInput(activeRecipe[attr], 'text', attr, 'js-attr-' + attr);
-                    }
-                    ASSETGENERATOR.CONTROLLS.util.addToControlls(input);
-                    ASSETGENERATOR.CONTROLLS.handlers.dynamicInputs(input);
-                }
-            }
-        }
-
     }
 
     /**
@@ -393,13 +395,13 @@ ASSETGENERATOR.CANVAS.loadRecipe = (function () {
 var ASSETGENERATOR = ASSETGENERATOR || {};
 ASSETGENERATOR.CONTROLLS = ASSETGENERATOR.CONTROLLS || {};
 
-ASSETGENERATOR.CONTROLLS.handlers = (function() {
+ASSETGENERATOR.CONTROLLS.handlers = (function () {
     var hooks = {
         updateActiveRecipe: 'js-updateActiveRecipe',
     };
 
     function init(opts) {
-        for(var hook in hooks) {
+        for (var hook in hooks) {
             eval(hook)();
         }
     }
@@ -414,16 +416,27 @@ ASSETGENERATOR.CONTROLLS.handlers = (function() {
     function dynamicInput(input) {
         $(input, $('.js-dynamics')).on('change input move', function (e) {
             var $ele = $(this);
-            if($ele[0].tagName == 'LABEL') {
+            if ($ele[0].tagName == 'LABEL') {
                 $ele = $('input', $(this));
             }
             var value = $ele.val();
             var attr = $ele.attr('name');
-            console.log('ele', $ele);
             var recipe = ASSETGENERATOR.FILESYSTEM.base.getActiveRecipe();
             recipe[attr] = value;
             ASSETGENERATOR.FILESYSTEM.base.setActiveRecipe(recipe);
             ASSETGENERATOR.CANVAS.loadRecipe.load();
+        });
+    }
+
+    function arrayDropdown(select) {
+        $(select).on('change', function (e) {
+            var $target = $('input.' + $(this).attr("class"), $('.js-dynamics'));
+            var $ele = $(this);
+            if ($ele[0].tagName == 'LABEL') {
+                $ele = $('select', $(this));
+            }
+            $target.val($ele.val());
+            $target.trigger('change');
         });
     }
 
@@ -432,6 +445,7 @@ ASSETGENERATOR.CONTROLLS.handlers = (function() {
         init: init,
         hooks: hooks,
         dynamicInputs: dynamicInput,
+        arrayDropdown: arrayDropdown,
     }
 
 }());
@@ -447,7 +461,8 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
         showRecipeBox: '.js-show-recipe',
         updateRecipe: '.js-reload-recipe',
         recipeInput: '.js-recipe-input',
-        dynamicInputs : '.js-dynamics'
+        dynamicInputs : '.js-dynamics',
+        dynamicArrays : '.js-arrays'
     };
 
     function init(opts) {
@@ -455,12 +470,23 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
     }
 
 
-    function createDropdown(elements, classes) {
+    function createDropdown(elements, classes, label, noIndex) {
         var $select = $('<select></select>');
-        for (ele in elements) {
-            var $option = $('<option value="' + elements[ele] +'">' + ele + '</option>');
+        for (var ele in elements) {
+            var $option;
+            if(noIndex) {
+                $option = $('<option value="' + elements[ele] +'">' + elements[ele] + '</option>');
+            } else {
+                $option = $('<option value="' + elements[ele] +'">' + ele + '</option>');
+            }
             $select.append($option);
         }
+
+        if(typeof label !== 'undefined') {
+            var $label = $('<label for="' + label + '">' + label + '</label>');
+            $select = $label.append($select);
+        }
+
         if(classes) {
             $select.addClass(classes);
         }
@@ -503,8 +529,13 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
         $(elements.dynamicInputs).append(element);
     }
 
+    function addToArrays(element) {
+        $(elements.dynamicArrays).append(element);
+    }
+
     function emptyControlls() {
         $(elements.dynamicInputs).empty();
+        $(elements.dynamicArrays).empty();
     }
 
 
@@ -517,6 +548,7 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
         updateRecipe: updateRecipe,
         addInput: addInput,
         addToControlls: addToControlls,
+        addToArrays: addToArrays,
         emptyControlls: emptyControlls,
     }
 
