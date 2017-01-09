@@ -4,7 +4,6 @@ ASSETGENERATOR.CONTROLLS = ASSETGENERATOR.CONTROLLS || {};
 ASSETGENERATOR.CONTROLLS.handlers = (function() {
     var hooks = {
         updateActiveRecipe: 'js-updateActiveRecipe',
-
     };
 
     function init(opts) {
@@ -20,10 +19,27 @@ ASSETGENERATOR.CONTROLLS.handlers = (function() {
         });
     }
 
+    function dynamicInput(input) {
+        $(input, $('.js-dynamics')).on('change input move', function (e) {
+            var $ele = $(this);
+            if($ele[0].tagName == 'LABEL') {
+                $ele = $('input', $(this));
+            }
+            var value = $ele.val();
+            var attr = $ele.attr('name');
+            console.log('ele', $ele);
+            var recipe = ASSETGENERATOR.FILESYSTEM.base.getActiveRecipe();
+            recipe[attr] = value;
+            ASSETGENERATOR.FILESYSTEM.base.setActiveRecipe(recipe);
+            ASSETGENERATOR.CANVAS.loadRecipe.load();
+        });
+    }
+
 
     return {
         init: init,
         hooks: hooks,
+        dynamicInputs: dynamicInput,
     }
 
 }());

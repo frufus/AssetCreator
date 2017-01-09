@@ -15,18 +15,18 @@
   ],
 
   "Head": {
-    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillHead(activeRecipe.skincolor[0], activeRecipe.skincolor[2]);}"
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillHead(activeRecipe.skincolor, activeRecipe.skincolor);}"
   },
   "Profile": {
-    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillProfile(activeRecipe.skincolor[0]);}"
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillProfile(activeRecipe.skincolor);}"
   },
   "Jaw": {
-    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillJaw(activeRecipe.skincolor[0]);}"
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillJaw(activeRecipe.skincolor);}"
   },
   "Face":{
-    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillFace(activeRecipe.skincolor[0], activeRecipe.eyecolor[Math.floor(Math.random() *3)]);  ASSETGENERATOR.ASSET.display.drawShadow(activeRecipe.skincolor[0], activeRecipe.skincolor[2])}"
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.fillFace(activeRecipe.skincolor, activeRecipe.eyecolor);  ASSETGENERATOR.ASSET.display.drawShadow(activeRecipe.skincolor, activeRecipe.skincolor)}"
   },
   "Nose":{
-    "function": "function func(){ ASSETGENERATOR.ASSET.display.chooseNose(activeRecipe.skincolor[1], activeRecipe.skincolor[2]);}"
+    "function": "function func(){ ASSETGENERATOR.ASSET.display.chooseNose(activeRecipe.skincolor, activeRecipe.skincolor);}"
   }
 }

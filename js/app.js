@@ -10,7 +10,7 @@ $(document).ready(function() {
     asset.display.init();
 
     var $dropdown = controlls.util.createDropdown(filesystem.base.getRecipes(), controlls.handlers.hooks.updateActiveRecipe);
-    $(controlls.util.elements.inputs).append($dropdown);
+    $(controlls.util.elements.inputs).prepend($dropdown);
     asset.display.init();
 
     var recipes = filesystem.base.getRecipes();

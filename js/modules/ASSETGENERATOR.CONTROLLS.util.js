@@ -29,8 +29,23 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
         return $select;
     }
 
-    function addInput(name) {
 
+    function addInput(value, type, label, classes) {
+        if (typeof type === 'undefined') {
+            type = 'text';
+        }
+        var $input = $('<input type="' + type + '" value="' + value + '" name="'+ label + '" id="'+ label + '">');
+
+        if (classes) {
+            $input.addClass(classes);
+        }
+
+        if(typeof label !== 'undefined') {
+            var $label = $('<label for="' + label + '">' + label + '</label>');
+            $input = $label.append($input);
+        }
+
+        return $input;
     }
 
     function closeRecipeBox() {
@@ -41,9 +56,17 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
         $(elements.recipeBox).show();
     }
 
-    function updateRecipe() {
+    function updateRecipe(recipe) {
         ASSETGENERATOR.FILESYSTEM.base.setActiveRecipe(JSON.parse($(elements.recipeInput).val()));
         ASSETGENERATOR.CANVAS.loadRecipe.load();
+    }
+
+    function addToControlls(element) {
+        $(elements.dynamicInputs).append(element);
+    }
+
+    function emptyControlls() {
+        $(elements.dynamicInputs).empty();
     }
 
 
@@ -54,7 +77,9 @@ ASSETGENERATOR.CONTROLLS.util = (function() {
         closeRecipeBox: closeRecipeBox,
         showRecipeBox: showRecipeBox,
         updateRecipe: updateRecipe,
-
+        addInput: addInput,
+        addToControlls: addToControlls,
+        emptyControlls: emptyControlls,
     }
 
 }());
