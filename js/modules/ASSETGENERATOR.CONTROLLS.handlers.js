@@ -20,7 +20,7 @@ ASSETGENERATOR.CONTROLLS.handlers = (function () {
     }
 
     function dynamicInput(input) {
-        $(input, $('.js-dynamics')).on('change input move', function (e) {
+        $(input, $('.js-dynamics')).on('change', function (e) {
             var $ele = $(this);
             if ($ele[0].tagName == 'LABEL') {
                 $ele = $('input', $(this));

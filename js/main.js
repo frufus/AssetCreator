@@ -374,7 +374,7 @@ ASSETGENERATOR.CANVAS.loadRecipe = (function () {
         }
         for (var attr in activeRecipe) {
             if (activeRecipe.hasOwnProperty(attr)) {
-                if (activeRecipe[attr] instanceof Array || typeof activeRecipe[attr] === 'string') {
+                if (activeRecipe[attr] instanceof Array || typeof activeRecipe[attr] === 'string' ||  activeRecipe[attr] === parseInt(activeRecipe[attr], 10)) {
                     if (activeRecipe[attr] instanceof Array) {
                         activeRecipe.arrays[attr] = activeRecipe[attr];
                         activeRecipe[attr] = randomFromArray(activeRecipe.arrays[attr]);
@@ -383,7 +383,11 @@ ASSETGENERATOR.CANVAS.loadRecipe = (function () {
                     if (/^#[0-9A-F]{6}$/i.test(activeRecipe[attr])) {
                         input = ASSETGENERATOR.CONTROLLS.util.addInput(activeRecipe[attr], 'color', attr, 'js-attr-' + attr);
                     } else {
-                        input = ASSETGENERATOR.CONTROLLS.util.addInput(activeRecipe[attr], 'text', attr, 'js-attr-' + attr);
+                        if(activeRecipe[attr] === parseInt(activeRecipe[attr], 10)) {
+                            input = ASSETGENERATOR.CONTROLLS.util.addInput(activeRecipe[attr], 'number', attr, 'js-attr-' + attr);
+                        }else {
+                            input = ASSETGENERATOR.CONTROLLS.util.addInput(activeRecipe[attr], 'text', attr, 'js-attr-' + attr);
+                        }
                     }
                     if (typeof activeRecipe.arrays[attr] !== 'undefined') {
                         var select = ASSETGENERATOR.CONTROLLS.util.createDropdown(activeRecipe.arrays[attr], 'js-attr-' + attr, attr, true);
@@ -454,7 +458,7 @@ ASSETGENERATOR.CONTROLLS.handlers = (function () {
     }
 
     function dynamicInput(input) {
-        $(input, $('.js-dynamics')).on('change input move', function (e) {
+        $(input, $('.js-dynamics')).on('change', function (e) {
             var $ele = $(this);
             if ($ele[0].tagName == 'LABEL') {
                 $ele = $('input', $(this));
